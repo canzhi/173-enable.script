@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+touch /var/lock/subsys/local
+
+#追加的开机启动
+/etc/rc.d/run_service.sh
+
+#要保证存在软链接ln -s /usr/local/freeswitch/bin/freeswitch /usr/bin/
+freeswitch -nc
