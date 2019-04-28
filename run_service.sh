@@ -14,12 +14,12 @@ REDIS_HOME="/home/hcicloud/redis/"
 REDIS_ACCOUNT="hcicloud"
 
 #####　jTTS的全局变量 #####
-jTTS_HOME="/opt/SinoVoice/jTTS-6.0/"
-jTTS_ACCOUNT="root"
+jTTS_HOME="/home/hcijtts/jTTS-6.3.8"
+jTTS_ACCOUNT="hcijtts"
 
 ##### MRCP的全局变量 #####
-MRCP_HOME="/opt/SinoVoice/unimrcp/"
-MRCP_ACCOUNT="root"
+MRCP_HOME="/home/hcijtts/unimrcp/"
+MRCP_ACCOUNT="hcijtts"
 
 
 ##### FreeSWITCH的全局变量 #####
@@ -100,25 +100,23 @@ do
 
 	##### 4.启动jTTS #####
 	LOG "准备启动jTTS..."
-	jTTS_NUM=`ps -ef | grep "jTTSService4.exe" |grep -v grep |wc -l`
+	jTTS_NUM=`ps -ef | grep "jTTSService4.exe" |grep -v grep |grep ${jTTS_ACCOUNT} |wc -l`
 	if [ ${jTTS_NUM} -ne 0 ];then
 		LOG "jTTS服务已启动"
 	else
 		LOG "正在启动jTTS... ..."
-		cd ${jTTS_HOME}/bin/
-		./jtts.sh start
+		su - ${jTTS_ACCOUNT} -c "cd ${jTTS_HOME}/bin/;./jtts.sh start"
 		sleep 10
 	fi
 
 	##### 5.启动MRCP #####
 	LOG "准备启动MRCP"
-	MRCP_NUM=`ps -ef |grep unimrcpserver |grep -v grep |wc -l`
+	MRCP_NUM=`ps -ef |grep unimrcpserver |grep -v grep |grep ${MRCP_ACCOUNT} |wc -l`
 	if [ ${MRCP_NUM} -ne 0 ];then
 		LOG "MRCP服务已启动"
 	else
 		LOG "正在启动MRCP... ..."
-		cd ${MRCP_HOME}/bin/
-		./mrcp.sh start
+		su - ${MRCP_ACCOUNT} -c "cd ${MRCP_HOME}/bin/;./mrcp.sh start"
 		sleep 10
 	fi
 	##### 6.启动FreeSWITCH #####
