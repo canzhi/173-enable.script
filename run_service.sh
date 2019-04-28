@@ -6,11 +6,11 @@
 ##### 全局变量 #####
 
 ##### 防火墙的全局变量 #####
-IPTABLES_HOME="/root/"
+IPTABLES_HOME="/root"
 IPTABLES_ACCOUNT="root"
 
 ##### redis的全局变量 #####
-REDIS_HOME="/home/hcicloud/redis/"
+REDIS_HOME="/home/hcicloud/redis"
 REDIS_ACCOUNT="hcicloud"
 
 #####　jTTS的全局变量 #####
@@ -18,37 +18,37 @@ jTTS_HOME="/home/hcijtts/jTTS-6.3.8"
 jTTS_ACCOUNT="hcijtts"
 
 ##### MRCP的全局变量 #####
-MRCP_HOME="/home/hcijtts/unimrcp/"
+MRCP_HOME="/home/hcijtts/unimrcp"
 MRCP_ACCOUNT="hcijtts"
 
 
 ##### FreeSWITCH的全局变量 #####
-FREESWITCH_HOME="/usr/local/freeswitch/"
+FREESWITCH_HOME="/usr/local/freeswitch"
 FREESWITCH_ACCOUNT="root"
 
 ##### ES的全局变量 #####
-ES_HOME="/home/elasticsearch/elasticsearch-rtf-master/"
+ES_HOME="/home/elasticsearch/elasticsearch-rtf-master"
 ES_ACCOUNT="elasticsearch"
 
 
 ##### Tomcat的全局变量 #####
-TOMCAT_HOME="/opt/apache-tomcat-7.0.42/"
+TOMCAT_HOME="/opt/apache-tomcat-7.0.42"
 TOMCAT_ACCOUNT="root"
 TOMCAT_SERVER_IP="10.248.17.3"
 TOMCAT_PORT="8080"
 
 ##### 能力平台的全局变量 #####
-HCICLOUD_HOME="/home/hcicloud8216/cloud/"
+HCICLOUD_HOME="/home/hcicloud8216/cloud"
 HCICLOUD_ACCOUNT="hcicloud8216"
 
 ##### Nginx的全局变量 #####
-NGINX_HOME="/usr/local/nginx/"
+NGINX_HOME="/usr/local/nginx"
 NGINX_ACCOUNT="root"
 NGINX_SERVER_IP="10.248.17.3"
 NGINX_PORT="8050"
 
 ##### 小睿的全局变量 #####
-XR_HOME="/root/pro/"
+XR_HOME="/root/pro"
 XR_ACCOUNT="root"
 
 
@@ -122,7 +122,7 @@ do
 	##### 6.启动FreeSWITCH #####
 	LOG "准备启动FreeSWITCH..."
 	FREESWITCH_NUM=`ps -ef | grep freeswitch |grep -v grep |wc -l`
-	if [ FREESWITCH_NUM -ne 0 ];then
+	if [ ${FREESWITCH_NUM} -ne 0 ];then
 		LOG "FreeSWITCH服务已启动"
 	else
 		LOG "正在启动FreeSWITCH... ..."
@@ -156,7 +156,10 @@ done
 
 ##### 8.启动能力平台 #####
 LOG "启动所有能力组件..."
-su - ${HCICLOUD_ACCOUNT} -c "cd /etc/rc.d/;./start_all_service.sh"
+HCICLOUD_NUM=`ps -ef |grep servicefx | grep -v grep |wc -l`
+if [ ${HCICLOUD_NUM} -ne 7 ];then
+	su - ${HCICLOUD_ACCOUNT} -c "cd /etc/rc.d/;./start_all_service.sh"
+fi
 sleep 5
 
 # 检查能力组件是否启动
@@ -198,6 +201,8 @@ else
 	XR_PACKAGE=`ls -1tr *.jar |tail -1`
 	nohup java -jar "XR_PACKAGE" &
 fi
+
+LOG "开机启动完毕"
 
 
 
