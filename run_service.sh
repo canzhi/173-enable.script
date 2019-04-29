@@ -14,12 +14,12 @@ REDIS_HOME="/home/hcicloud/redis"
 REDIS_ACCOUNT="hcicloud"
 
 #####　jTTS的全局变量 #####
-jTTS_HOME="/home/hcijtts/jTTS-6.3.8"
-jTTS_ACCOUNT="hcijtts"
+jTTS_HOME="/home/hcitts/jTTS-6.3.8"
+jTTS_ACCOUNT="hcitts"
 
 ##### MRCP的全局变量 #####
-MRCP_HOME="/home/hcijtts/unimrcp"
-MRCP_ACCOUNT="hcijtts"
+MRCP_HOME="/home/hcitts/unimrcp"
+MRCP_ACCOUNT="hcitts"
 
 
 ##### FreeSWITCH的全局变量 #####
@@ -193,7 +193,7 @@ fi
 ##### 10.启动小睿平台 #####
 LOG "准备启动小睿平台..."
 XR_NUM=`ps -ef |grep xrserver |grep -v grep |wc -l`
-if [ ${NGINX_NUM} -ne 0 ];then
+if [ ${XR_NUM} -ne 0 ];then
 	LOG "小睿平台已启动"
 else
 	LOG "正在启动小睿平台... ..."
